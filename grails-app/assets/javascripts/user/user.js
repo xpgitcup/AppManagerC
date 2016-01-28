@@ -5,6 +5,11 @@
  */
 
 $(function () {
+    var apps = $("#appList").text();
+    console.info(apps);
+    var applist = eval(apps);
+    console.info(applist);
+    
     $('#normalAppViewPagination').pagination({
         layout:['list','sep','first','prev','sep','links','sep','next','last','sep'],
         displayMsg: '',

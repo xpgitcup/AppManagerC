@@ -28,30 +28,18 @@
         </ul>
     </div>
     <!--主体显示区-->
+    <div class="hidden" id="appList">${apps}</div>
     <div id="list-userApp" class="content scaffold-list" role="main">
         <div id="tt" class="easyui-tabs" style="width:100%">   
-            <g:each in="${roles}" status="i" var="role">
-                <div title="${role.name}" style="padding:20px">   
-                    tab${i}    
+            <g:each in="${apps}" status="i" var="app">
+                <div title="${app.key}" style="padding:20px">   
+                    <div id="appView"></div>
+                    <div class="easyui-panel">
+                        <div id="appViewPagination" class="easyui-pagination" data-options="total:${app.value},pageSize:10"></div>
+                    </div>
                 </div>   
             </g:each>
         </div>             
-        <table>
-            <tr>
-                <td>
-                    <div id="normalAppView"></div>
-                    <div class="easyui-panel">
-                        <div id="normalAppViewPagination" class="easyui-pagination" data-options="total:${normalAppCount},pageSize:10"></div>
-                    </div>
-                </td>
-                <td>
-                    <div id="userAppView"></div>
-                    <div class="easyui-panel">
-                        <div id="userAppViewPagination" class="easyui-pagination" data-options="total:${userAppCount},pageSize:10"></div>
-                    </div>
-                </td>
-            </tr>
-        </table>
     </div>
 </body>
 </html>

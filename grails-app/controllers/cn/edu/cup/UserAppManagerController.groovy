@@ -58,11 +58,12 @@ class UserAppManagerController {
     
     def findCount(name) {
         def qa = UserApp.createCriteria();
+        def n = AppRoles.findByName(name)
         def nc = qa.get{
             projections{
                 count("appRoles")
             }
-            eq('appRoles', name)
+            eq('appRoles', n)
         }
         return nc
     }
@@ -88,15 +89,15 @@ class UserAppManagerController {
         def roles = AppRoles.list()
         //----------------------------------------------------------------------
         //每个类型的个数
-        def appCount = [:]
+        def apps = [:]
         println "${roles}"
         roles.each {it->
             println "${it}"
             def nc = findCount(it.name)
-            appCount.put(it.name, nc)
+            apps.put(it.name, nc)
         }
         //----------------------------------------------------------------------
-        model:[appCount: appCount, ip: ip, roles: roles]
+        model:[apps: apps, ip: ip]
     }
 
     @Transactional
