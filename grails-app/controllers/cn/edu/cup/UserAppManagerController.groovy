@@ -1,5 +1,7 @@
 package cn.edu.cup
 
+import cn.edu.cup.AppRoles
+import cn.edu.cup.UserApp
 import grails.transaction.Transactional
 import org.codehaus.groovy.grails.web.util.WebUtils
 
@@ -54,7 +56,21 @@ class UserAppManagerController {
         }
     }
     
+    def findCount(name) {
+        def qa = UserApp.createCriteria();
+        def nc = qa.get{
+            projections{
+                count("appRoles")
+            }
+            eq('appRoles', name)
+        }
+        return nc
+    }
+    
     def index() {
+        /*
+         * 获取客户端的IP
+         * */
         //def ip = request.getRemoteAddr()
         def ip = request.getHeader("Client-IP")
         println "${ip} -- 1"
@@ -67,30 +83,20 @@ class UserAppManagerController {
                 println "${ip} -- 3"
             }
         } 
-        def normalAppRoles = AppRoles.findByName('一般程序')
-        def userAppRoles = AppRoles.findByName('用户程序')
-        println "${normalAppRoles}"
-        println "${userAppRoles}"
         //----------------------------------------------------------------------
-        def qa = UserApp.createCriteria();
-        def normalAppCount = qa.get{
-            projections{
-                count("appRoles")
-            }
-            eq('appRoles', normalAppRoles)
+        //程序类型
+        def roles = AppRoles.list()
+        //----------------------------------------------------------------------
+        //每个类型的个数
+        def appCount = [:]
+        println "${roles}"
+        roles.each {it->
+            println "${it}"
+            def nc = findCount(it.name)
+            appCount.put(it.name, nc)
         }
-        println "${normalAppCount}"
         //----------------------------------------------------------------------
-        def qb = UserApp.createCriteria();
-        def userAppCount = qb.get{
-            projections{
-                count("appRoles")
-            }
-            eq('appRoles', userAppRoles)
-        }
-        println "${userAppCount}"
-        //----------------------------------------------------------------------
-        model:[normalAppCount: normalAppCount, userAppCount: userAppCount, ip: ip]
+        model:[appCount: appCount, ip: ip, roles: roles]
     }
 
     @Transactional
