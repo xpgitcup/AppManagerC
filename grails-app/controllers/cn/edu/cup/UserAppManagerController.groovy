@@ -29,13 +29,15 @@ class UserAppManagerController {
      * */
     def queryUserApp(params) {
         def role = params.role
+        println "查找：${role}"
         def normalAppRoles = AppRoles.findByName(role)
+        println "查找：${normalAppRoles}"
         def qa = UserApp.createCriteria();
         def normalAppList = qa.list(params){
             eq('appRoles', normalAppRoles)
         }
         def model = [userAppInstanceList: normalAppList]
-        println "----${normalAppList}"
+        println "检索结果 : ----${normalAppList}"
         //----------------------------------------------------------------------
         if (request.xhr) {
             render(template: "userAppView", model: model)   //这是数据
