@@ -10,35 +10,6 @@ $(function () {
     var applist = eval(apps);
     console.info(applist);
     
-    $('#normalAppViewPagination').pagination({
-        layout:['list','sep','first','prev','sep','links','sep','next','last','sep'],
-        displayMsg: '',
-        onSelectPage: function (pageNumber, pageSize) {
-            console.info(pageNumber);
-            console.info(pageSize);
-            $(this).pagination('loading');
-            //alert('pageNumber:' + pageNumber + ',pageSize:' + pageSize);
-            loadData(pageNumber, pageSize);
-            $(this).pagination('loaded');
-        }
-    });
-    //
-    $('#normalAppViewPagination').pagination('select', 1); //缺省的状态，调出1页
-    //
-    $('#userAppViewPagination').pagination({
-        layout:['list','sep','first','prev','sep','links','sep','next','last','sep'],
-        displayMsg: '',
-        onSelectPage: function (pageNumber, pageSize) {
-            console.info(pageNumber);
-            console.info(pageSize);
-            $(this).pagination('loading');
-            //alert('pageNumber:' + pageNumber + ',pageSize:' + pageSize);
-            loadDataUser(pageNumber, pageSize);
-            $(this).pagination('loaded');
-        }
-    });
-    //
-    $('#userAppViewPagination').pagination('select', 1); //缺省的状态，调出1页
 });
 
 function loadDataUser(pageNumber, pageSize) {
@@ -63,12 +34,14 @@ function loadDataUser(pageNumber, pageSize) {
 function loadData(pageNumber, pageSize) {
     console.info('loading...' + pageNumber);
     var offset = (pageNumber - 1) * pageSize;
+    var tab = $("#appTabs");
+    var role = tab.select().title;
     //调用testa--查询数据
     $.ajax({
-        url: 'userAppManager/queryNormalApp',
-        data: 'offset=' + offset + '&max=' + pageSize,
+        url: 'userAppManager/queryUserApp',
+        data: 'offset=' + offset + '&max=' + pageSize + '&role=' + role,
         success: function (data, textStatus) {
-            $('#normalAppView').html(data);
+            $('#appView').html(data);
             console.info(data);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {

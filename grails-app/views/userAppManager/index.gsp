@@ -30,16 +30,28 @@
     <!--主体显示区-->
     <div class="hidden" id="appList">${apps}</div>
     <div id="list-userApp" class="content scaffold-list" role="main">
-        <div id="tt" class="easyui-tabs" style="width:100%">   
+        <div id="appTabs" class="easyui-tabs" style="width:100%">   
             <g:each in="${apps}" status="i" var="app">
                 <div title="${app.key}" style="padding:20px">   
                     <div id="appView"></div>
                     <div class="easyui-panel">
-                        <div id="appViewPagination" class="easyui-pagination" data-options="total:${app.value},pageSize:10"></div>
+                        <div id="appViewPagination${i}" 
+                             class="easyui-pagination" 
+                             data-options="total:${app.value}, 
+                             pageSize:10, 
+                             onSelectPage: function (pageNumber, pageSize) {
+                             console.info(pageNumber);
+                             console.info(pageSize);
+                             $(this).pagination('loading');
+                             //alert('pageNumber:' + pageNumber + ',pageSize:' + pageSize);
+                             loadData(pageNumber, pageSize);
+                             $(this).pagination('loaded');
+                             }">
                     </div>
-                </div>   
-            </g:each>
-        </div>             
-    </div>
+                </div>
+            </div>   
+        </g:each>
+    </div>             
+</div>
 </body>
 </html>

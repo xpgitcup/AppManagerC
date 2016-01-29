@@ -24,24 +24,12 @@ class UserAppManagerController {
             log: log, logok: logok, lines: lines]
     }
     
+    /*
+     * 查询应用程序
+     * */
     def queryUserApp(params) {
-        def normalAppRoles = AppRoles.findByName('用户程序')
-        def qa = UserApp.createCriteria();
-        def normalAppList = qa.list(params){
-            eq('appRoles', normalAppRoles)
-        }
-        def model = [userAppInstanceList: normalAppList]
-        println "----${normalAppList}"
-        //----------------------------------------------------------------------
-        if (request.xhr) {
-            render(template: "userAppView", model: model)   //这是数据
-        } else {
-            model: model
-        }
-    }
-    
-    def queryNormalApp(params) {
-        def normalAppRoles = AppRoles.findByName('一般程序')
+        def role = params.role
+        def normalAppRoles = AppRoles.findByName(role)
         def qa = UserApp.createCriteria();
         def normalAppList = qa.list(params){
             eq('appRoles', normalAppRoles)
@@ -96,6 +84,8 @@ class UserAppManagerController {
             def nc = findCount(it.name)
             apps.put(it.name, nc)
         }
+        //----------------------------------------------------------------------
+        
         //----------------------------------------------------------------------
         model:[apps: apps, ip: ip]
     }
