@@ -16,7 +16,7 @@ $(function () {
             var p = $('#appViewPagination' + index).pagination('select');
     }});
     
-    //$('#appViewPagination0').pagination('select', 1); //缺省的状态，调出1页
+    $('#appViewPagination0').pagination('select', 1); //缺省的状态，调出1页
     
 });
 
