@@ -10,38 +10,30 @@ $(function () {
     var applist = eval(apps);
     console.info(applist);
     
+    var appTabs = $("#appTabs");
+    appTabs.tabs({onSelect: function(title, index){
+            console.info('选择：' + title + ':' + index);
+            var p = $('#appViewPagination' + index).pagination('select');
+    }});
+    
+    //$('#appViewPagination0').pagination('select', 1); //缺省的状态，调出1页
+    
 });
 
-function loadDataUser(pageNumber, pageSize) {
-    console.info('loading...' + pageNumber);
-    var offset = (pageNumber - 1) * pageSize;
-    //调用testa--查询数据
-    $.ajax({
-        url: 'userAppManager/queryUserApp',
-        data: 'offset=' + offset + '&max=' + pageSize,
-        success: function (data, textStatus) {
-            $('#userAppView').html(data);
-            console.info(data);
-        },
-        error: function (XMLHttpRequest, textStatus, errorThrown) {
-            console.info(XMLHttpRequest);
-            console.info(textStatus);
-            console.info(errorThrown);
-        }
-    });
-}
 
 function loadData(pageNumber, pageSize) {
     console.info('loading...' + pageNumber);
     var offset = (pageNumber - 1) * pageSize;
-    var tab = $("#appTabs");
-    var role = tab.select().title;
+    var tab = $("#appTabs").tabs('getSelected');
+    console.info(tab);
+    var role = tab.panel('options').title;//tab;
+    console.info('当前页：' + role);
     //调用testa--查询数据
     $.ajax({
         url: 'userAppManager/queryUserApp',
         data: 'offset=' + offset + '&max=' + pageSize + '&role=' + role,
         success: function (data, textStatus) {
-            $('#appView').html(data);
+            $('#appView'+role).html(data);
             console.info(data);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
